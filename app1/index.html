@@ -1,0 +1,44 @@
+<!-- HTML for Banana-Mail and Banana-Drive -->
+<html>
+  <head>
+    <style>
+    #session{
+      display: none;
+    }
+    </style>
+  </head>
+  <body>
+      <h1 id="user-info">Please Log in...</h1>
+      <div>
+        <input type="text" id="username" placeholder="Enter Username" />
+        <button onclick="login()">login</button>
+      </div>
+      <iframe src="https://banana-session.ruk.asia" id="session" ></iframe>
+  <script>
+    const sessionWindow = document.getElementById("session").contentWindow;
+    const userInfoElement = document.getElementById("user-info");
+    
+    //send data to shared storage in session app
+    const sendDataToSession = (data) => {
+      sessionWindow.postMessage(
+        data,
+        "https://banana-session.ruk.asia"
+      );
+    };
+
+    //Receive messages from Session App and Display in UI.
+     window.addEventListener(
+       "message",
+       (event) => {
+          userInfoElement.innerHTML = JSON.stringify(event.data);
+       },
+       false
+     );
+
+    //Send Auth info to shared storage on user login
+    const login = () => sendDataToSession(
+    window.getElementById("username").value
+    );
+  </script>
+  </body>
+</html>
