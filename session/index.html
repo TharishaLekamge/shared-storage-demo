@@ -1,0 +1,34 @@
+<!-- HTML for Banana Session -->
+<html>
+  <head>
+    <script>
+      const saveToLocalStorage = (data) => {
+        window.localStorage.setItem("auth", data);
+      };
+
+      //capture messages sent by apps
+      window.addEventListener(
+        "message",
+        (event) => {
+          saveToLocalStorage(event.data);
+        },
+        false
+      );
+
+      //send storage data to parent web app
+      const sendAuthInfo = () => {
+        const allowedOrigin = document.referrer;
+        const authData = localStorage.getItem("auth");
+        sessionWindow.postMessage(data, allowedOrigin);
+      };
+      sendAuthInfo();
+
+      //send auth info to all web apps when storage updates
+      addEventListener("storage", (event) => {
+        sendAuthInfo();
+      });
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
