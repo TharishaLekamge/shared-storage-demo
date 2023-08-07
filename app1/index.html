@@ -15,30 +15,34 @@
       </div>
       <iframe src="https://banana-session.ruk.asia" id="session" ></iframe>
   <script>
-    const sessionWindow = document.getElementById("session").contentWindow;
-    const userInfoElement = document.getElementById("user-info");
-    
-    //send data to shared storage in session app
-    const sendDataToSession = (data) => {
-      sessionWindow.postMessage(
-        data,
-        "https://banana-session.ruk.asia"
+      const sessionWindow = document.getElementById("session").contentWindow;
+      const userInfoElement = document.getElementById("user-info");
+      //display logged-in user info
+      const showUserInfo = (username) =>
+        (userInfoElement.innerText = `You're logged in as ${JSON.stringify(
+          username
+        )}`);
+      
+      //send data to shared storage in session app
+      const sendDataToSession = (data) => {
+        sessionWindow.postMessage(data, "https://banana-session.ruk.asia");
+      };
+      
+      //Receive messages from Session App and Display in UI.
+      window.addEventListener(
+        "message",
+        (event) => {
+          showUserInfo(event.data);
+        },
+        false
       );
-    };
-
-    //Receive messages from Session App and Display in UI.
-     window.addEventListener(
-       "message",
-       (event) => {
-          userInfoElement.innerHTML = JSON.stringify(event.data);
-       },
-       false
-     );
-
-    //Send Auth info to shared storage on user login
-    const login = () => sendDataToSession(
-    document.getElementById("username").value
-    );
+      
+      //Send Auth info to shared storage on user login
+      const login = () => {
+        const username = document.getElementById("username").value;
+        showUserInfo(username);
+        sendDataToSession(username);
+      };
   </script>
   </body>
 </html>
