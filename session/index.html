@@ -19,7 +19,7 @@
       const sendAuthInfo = () => {
         const allowedOrigin = document.referrer;
         const authData = localStorage.getItem("auth");
-        sessionWindow.postMessage(data, allowedOrigin);
+        window.parent.postMessage(data, allowedOrigin);
       };
       sendAuthInfo();
 
