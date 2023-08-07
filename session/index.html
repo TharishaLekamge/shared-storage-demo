@@ -18,6 +18,9 @@
       //send storage data to parent web app
       const sendAuthInfo = () => {
         const allowedOrigin = document.referrer;
+        if (!/^https:\/\/banana-(mail|drive)\.ruk\.asia\/$/.test(allowedOrigin)) {
+           return;
+        }
         const authData = localStorage.getItem("auth");
         window.parent.postMessage(authData, allowedOrigin);
       };
